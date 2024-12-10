@@ -4,7 +4,7 @@ Simple lightweight dependency injection
 
 See https://github.com/rssh/notes/blob/master/2024_12_09_dependency-injection.md for motivation blog=post.
 
-Discord channel on business4s:  https://discord.gg/GCMrwpGh
+Discord channel #scala-appcontext on business4s:  https://discord.gg/GCMrwpGh 
 
 Analog of UserDatabase example (see https://github.com/scala/scala3/blob/main/tests/run/Providers.scala) looks like:
 
