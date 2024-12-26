@@ -52,7 +52,7 @@ object Example1  {
   trait UserDatabase(using AppContextProvider[ConnectionPool]) {
     def insert(user: User) =
       val conn = AppContext[ConnectionPool].get()
-      conn.runQuery(s"insert into subscribers(name, email) values ${user.name} ${user.email}")
+      conn.runQuery(sql"insert into subscribers(name, email) values ${user.name} ${user.email}")
   }
   object UserDatabase {
     given (using AppContextProvider[ConnectionPool]): AppContextProvider[UserDatabase] with

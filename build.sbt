@@ -11,7 +11,6 @@ ThisBuild/resolvers ++= Opts.resolver.sonatypeOssSnapshots
 val sharedSettings = Seq(
     organization := "com.github.rssh",
     scalaVersion := "3.3.4",
-    name := "appcontext",
     scalacOptions ++= Seq(
                "-Xcheck-macros", 
     ),
@@ -22,7 +21,9 @@ val sharedSettings = Seq(
 
 lazy val root = project
   .in(file("."))
-  .aggregate(appcontext.js, appcontext.jvm, appcontext.native)
+  .aggregate(appcontext.js, appcontext.jvm, appcontext.native,
+             taglessFinal.js, taglessFinal.jvm, taglessFinal.native
+            )
   .settings(
     git.remoteRepo := "git@github.com:rssh/proofspace-appcontext.git",
     publishArtifact := false,
@@ -30,15 +31,18 @@ lazy val root = project
 
 
 lazy val appcontext = crossProject(JSPlatform, JVMPlatform, NativePlatform)
-    .in(file("."))
+    .in(file("core"))
     .settings(sharedSettings)
+    .settings(
+       name := "appcontext",
+    )
     .disablePlugins(SitePreviewPlugin)
     .jvmSettings(
         Compile / doc / scalacOptions := Seq("-groups",  
                 "-source-links:shared=github://rssh/scala-appcontext/master#shared",
                 "-source-links:jvm=github://rssh/scala-appcontext/master#jvm"),
         libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.3" % "test",
-        mimaFailOnNoPrevious := false
+        mimaFailOnNoPrevious := false,
     ).jsSettings(
         scalaJSUseMainModuleInitializer := true,
         Compile / doc / scalacOptions := Seq("-groups",  
@@ -48,4 +52,12 @@ lazy val appcontext = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ).nativeSettings(
     )
 
-
+lazy val taglessFinal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+   .in(file("tagless-final"))
+   .dependsOn(appcontext)
+   .settings(sharedSettings)
+   .settings(
+       name := "appcontext-tf",
+       libraryDependencies += "com.github.rssh" %%% "dotty-cps-async" % "0.9.23"
+   )
+   

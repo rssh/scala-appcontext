@@ -52,7 +52,7 @@ object AppContextProviders {
   private def generateImpl[T<: NonEmptyTuple:Type](using Quotes): Expr[AppContextProviders[T]] = {
     import quotes.reflect.*
     val tupleType = TypeRepr.of[T]
-    val tupleTypes = extractTupleTypes(tupleType)
+    val tupleTypes = TupleMacroses.extractTupleTypes(tupleType)
     val listResolved = tupleTypes.map{ t =>
       val tProvider = TypeRepr.of[AppContextProvider].appliedTo(t)
       Implicits.search(tProvider) match
@@ -76,7 +76,7 @@ object AppContextProviders {
   private def checkAllAreNeededImpl[T<:NonEmptyTuple:Type](p: Expr[AppContextProviders[T]])(using Quotes): Expr[Boolean] = {
     import quotes.reflect.*
     val tupleType = TypeRepr.of[T]
-    val tupleTypes = extractTupleTypes(tupleType)
+    val tupleTypes = TupleMacroses.extractTupleTypes(tupleType)
     val fromProvidersSymbol = Symbol.requiredMethod("com.github.rssh.appcontext.AppContextProvider.fromProviders")
     var retval = true
     for{ t <- tupleTypes } {
@@ -99,17 +99,6 @@ object AppContextProviders {
     Expr(retval)
   }
 
-  private def extractTupleTypes(using Quotes)(t: quotes.reflect.TypeRepr): List[quotes.reflect.TypeRepr] = {
-    import quotes.reflect.*
-    t match
-      case AppliedType(tf, args) if (defn.isTupleClass(tf.typeSymbol)) =>
-        args
-      case AppliedType(tf, args) if (tf.typeSymbol == Symbol.requiredClass("scala.*:")) =>
-        args.head :: extractTupleTypes(args.tail.head)
-      case tf if tf <:< TypeRepr.of[EmptyTuple] => List.empty
-      case _ =>
-        report.throwError(s"Type ${t.show} is not a tuple")
-  }
 
 
 }
