@@ -58,6 +58,6 @@ lazy val taglessFinal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
    .settings(sharedSettings)
    .settings(
        name := "appcontext-tf",
-       libraryDependencies += "com.github.rssh" %%% "dotty-cps-async" % "0.9.23"
+       libraryDependencies += "com.github.rssh" %%% "dotty-cps-async" % "0.9.23" % "optional"
    )
    

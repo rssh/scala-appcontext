@@ -1,5 +1,6 @@
 package com.github.rssh.appcontext
 
+import com.github.rssh.appcontext.util.AppContextPure
 import cps.*
 
 trait AppContextAsyncProvider[F[_],T] {
@@ -32,8 +33,8 @@ object AppContextAsyncProvider extends AppContextAsyncProviderLowLevel {
 
    */
 
-  given fromSync[F[_] : CpsMonad, T](using syncProvider: AppContextProvider[T]): AppContextAsyncProvider[F, T] with
-    def get: F[T] = summon[CpsMonad[F]].pure(syncProvider.get)
+  given fromSync[F[_] : AppContextPure, T](using syncProvider: AppContextProvider[T]): AppContextAsyncProvider[F, T] with
+    def get: F[T] = summon[AppContextPure[F]].pure(syncProvider.get)
 
 
 }

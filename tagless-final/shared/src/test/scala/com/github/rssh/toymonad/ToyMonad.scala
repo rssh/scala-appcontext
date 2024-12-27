@@ -1,5 +1,6 @@
 package com.github.rssh.toymonad
 
+import com.github.rssh.appcontext.util.{AppContextPure => UtilPure}
 
 import scala.concurrent.*
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -28,8 +29,9 @@ object ToyMonad {
     type TA = A
     type R = A
   }
-  
+
   type Reader[R,A] = ToyMonadReader.Reader[R,A]
+  
 
   object CpsEffectToyMonad extends CpsEffectMonad[ToyMonad] with CpsAsyncMonadInstanceContext[ToyMonad] {
 
