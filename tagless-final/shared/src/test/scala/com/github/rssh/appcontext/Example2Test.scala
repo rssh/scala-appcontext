@@ -30,7 +30,7 @@ object ExampleTF2 {
 
   object Logger {
 
-    def apply[F[_]:CpsEffectMonad:AppContextEffect[CorrelationId.Value *: EmptyTuple]]: Logger[F] = new Logger[F] {
+    def apply[F[_]:CpsEffectMonad:AppContextEffect[(CorrelationId.Value *: EmptyTuple)]]: Logger[F] = new Logger[F] {
 
       def info(msg: String): F[Unit] = {
         for {
@@ -66,7 +66,8 @@ object ExampleTF2 {
         logger <- AppContextEffect.get[F, Logger[F]]
         _ <- logger.info(s"Creating user with name: ${name} and email: ${email}")
         connection <- AppContextEffect.get[F, Connection]
-        userId = UUID.randomUUID().toString
+        //userId = UUID.randomUUID().toString
+        userId = "123"
       } yield {
         connection.runQuery(s"insert into users(id, name, email) values (${userId}, ${name}, ${email})")
         User(userId, name, email)
