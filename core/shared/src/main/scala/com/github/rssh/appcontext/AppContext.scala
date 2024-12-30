@@ -101,26 +101,27 @@ object AppContext  {
 
      /**
       * Put component to cache, replacing old if needed
-       * @param value
+      *
+      * @param value
       * @tparam T
       */
-    inline def put[T](value: T): Unit =
-        c.put(cacheKey[T], value)
+    inline def put[T](value: T): Option[T] =
+       c.put(cacheKey[T], value).map(_.asInstanceOf[T])
 
     /**
       * Modify component in cache.
       * @param f - function to remap
       * @tparam T - component type
-      */ 
+      */
     inline def modify[T](f: Option[T] => Option[T]): Unit =
-        c.updateWith(cacheKey[T])(v => f(v.asInstanceOf[Option[T]]))
+        val _unused = c.updateWith(cacheKey[T])(v => f(v.asInstanceOf[Option[T]]))
         
     /**
       * Remove component from cache.
       * @tparam T - component type
       */ 
-    inline def remove[T]: Unit =
-        c.remove(cacheKey[T])  
+    inline def remove[T]: Option[T] =
+        c.remove(cacheKey[T]).map(_.asInstanceOf[T])
   
   
 }
