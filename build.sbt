@@ -14,7 +14,8 @@ val sharedSettings = Seq(
     scalaVersion := "3.3.4",
     scalacOptions ++= Seq(
                "-Xcheck-macros", 
-               "--color", "never",
+               "-Wvalue-discard", 
+               "-Wnonunit-statement", 
     ),
     libraryDependencies += "org.scalameta" %%% "munit" % "1.0.0" % Test
 )
@@ -66,3 +67,4 @@ lazy val taglessFinal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies += "com.github.rssh" %% "cps-async-connect-cats-effect" % "0.9.23" % "test",
   )
    
+
