@@ -10,8 +10,8 @@ ThisBuild/resolvers ++= Opts.resolver.sonatypeOssSnapshots
 
 val sharedSettings = Seq(
     organization := "com.github.rssh",
-    scalaVersion := "3.6.4-RC1-bin-SNAPSHOT",
-    //scalaVersion := "3.3.4",
+    //scalaVersion := "3.6.4-RC1-bin-SNAPSHOT",
+    scalaVersion := "3.3.4",
     scalacOptions ++= Seq(
                "-Xcheck-macros", 
                "--color", "never",
