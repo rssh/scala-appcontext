@@ -2,7 +2,9 @@
 
 Simple lightweight dependency injection
 
-See https://github.com/rssh/notes/blob/master/2024_12_09_dependency-injection.md for motivation blog=post.
+See blog-posts:
+  - https://github.com/rssh/notes/blob/master/2024_12_09_dependency-injection.md for motivation and core
+  - https://github.com/rssh/notes/blob/master/2024_12_30_dependency_injection_tf.md for adoption to tagless-final style
 
 Discord channel #scala-appcontext on business4s:  https://discord.gg/GCMrwpGh 
 
@@ -75,3 +77,5 @@ test("AppContext Example3") {
 }
 
 ```
+
+
