@@ -63,4 +63,11 @@ object AppContextAsyncProviders {
    retval
  }
 
+  
+ inline def checkAllAreNeeded[F[_], Xs <: NonEmptyTuple](using p: AppContextAsyncProviders[F, Xs]): Boolean =
+    ${ TupleMacroses.checkAllAreNeeded[[X] =>> AppContextAsyncProvider[F, X], 
+                                       [X <: NonEmptyTuple] =>> AppContextAsyncProviders[F,X], 
+                                       Xs]('p) }
+
+
 }

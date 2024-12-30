@@ -71,8 +71,10 @@ object AppContextProviders {
 
 
   inline def checkAllAreNeeded[Xs<:NonEmptyTuple](using p: AppContextProviders[Xs]): Boolean =
-    ${ checkAllAreNeededImpl[Xs]('p) }
+    ${ TupleMacroses.checkAllAreNeeded[[X]=>>AppContextProvider[X],[X<:NonEmptyTuple]=>>AppContextProviders[X],Xs]('p) }
+   // ${ checkAllAreNeededImpl[Xs]('p) }
 
+  // not used,
   private def checkAllAreNeededImpl[T<:NonEmptyTuple:Type](p: Expr[AppContextProviders[T]])(using Quotes): Expr[Boolean] = {
     import quotes.reflect.*
     val tupleType = TypeRepr.of[T]

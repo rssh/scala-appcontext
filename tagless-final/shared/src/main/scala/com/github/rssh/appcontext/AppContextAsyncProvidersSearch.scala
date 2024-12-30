@@ -1,5 +1,6 @@
 package com.github.rssh.appcontext
 
+
 trait AppContextAsyncProvidersSearch[F[_],Dependencies<:NonEmptyTuple] {
 
    def getProvider[T,N<:Int](using TupleIndex.OfSubtype[Dependencies,T,N]): AppContextAsyncProvider[F,T]

@@ -1,6 +1,7 @@
 package com.github.rssh.appcontext
 
 
+
 import com.github.rssh.toymonad.ToyMonad
 import cps.*
 import cps.syntax.*
@@ -20,7 +21,7 @@ object ExampleTF2 {
       def value: String = c
   }
 
-  trait Logger[F[_]:AppContextEffect[CorrelationId.Value *: EmptyTuple]] {
+  trait Logger[F[_]:InAppContext[CorrelationId.Value *: EmptyTuple]] {
 
     def info(msg: String): F[Unit]
 
@@ -30,11 +31,11 @@ object ExampleTF2 {
 
   object Logger {
 
-    def apply[F[_]:CpsEffectMonad:AppContextEffect[(CorrelationId.Value *: EmptyTuple)]]: Logger[F] = new Logger[F] {
+    def apply[F[_]:CpsEffectMonad:InAppContext[(CorrelationId.Value *: EmptyTuple)]]: Logger[F] = new Logger[F] {
 
       def info(msg: String): F[Unit] = {
         for {
-          correlationId <- AppContextEffect.get[F, CorrelationId.Value]
+          correlationId <- InAppContext.get[F,CorrelationId.Value]
         } yield {
           println(s"info[${correlationId.value}]: ${msg}")
         }
@@ -42,7 +43,7 @@ object ExampleTF2 {
 
       def error(msg: String): F[Unit] = {
         for {
-          correlationId <- AppContextEffect.get[F, CorrelationId.Value]
+          correlationId <- InAppContext.get[F,CorrelationId.Value]
         } yield {
           println(s"error[${correlationId.value}]: ${msg}")
         }
@@ -50,7 +51,7 @@ object ExampleTF2 {
 
     }
 
-    given [F[_]:CpsEffectMonad:AppContextEffect[CorrelationId.Value *: EmptyTuple]] :AppContextAsyncProvider[F,Logger[F]] with
+    given [F[_]:CpsEffectMonad:InAppContext[CorrelationId.Value *: EmptyTuple]] :AppContextAsyncProvider[F,Logger[F]] with
       def get: F[Logger[F]] = {
         summon[CpsEffectMonad[F]].pure(Logger.apply[F])
       }
@@ -61,11 +62,11 @@ object ExampleTF2 {
 
   object BusinessLogic {
 
-    def createUser[F[_]:CpsEffectMonad:AppContextEffect[(Logger[F], Connection)]](name: String, email: String): F[User] = {
+    def createUser[F[_]:CpsEffectMonad:InAppContext[(Logger[F], Connection)]](name: String, email: String): F[User] = {
       for {
-        logger <- AppContextEffect.get[F, Logger[F]]
+        logger <- InAppContext.get[F,Logger[F]]
         _ <- logger.info(s"Creating user with name: ${name} and email: ${email}")
-        connection <- AppContextEffect.get[F, Connection]
+        connection <- InAppContext.get[F,Connection]
         //userId = UUID.randomUUID().toString
         userId = "123"
       } yield {

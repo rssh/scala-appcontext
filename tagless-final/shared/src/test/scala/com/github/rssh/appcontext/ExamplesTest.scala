@@ -1,5 +1,6 @@
 package com.github.rssh.appcontext
 
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import com.github.rssh.toymonad.ToyMonad
 import cps.*
@@ -25,16 +26,17 @@ object ExampleTF1 {
      def get():Connection
   }
 
-  trait UserDatabase[F[_]:Effect:AppContextEffect[ConnectionPool *: EmptyTuple]] {
+  trait UserDatabase[F[_]:Effect:InAppContext[ConnectionPool *: EmptyTuple]] {
      def insert(user: User):F[User]
   }
 
 
-  def newSubscriber1[F[_]:AppContextEffect[(UserDatabase[F],EmailService)]:Effect](user: User):F[User] = {
+
+  def newSubscriber1[F[_]:InAppContext[(UserDatabase[F],EmailService)]:Effect](user: User):F[User] = {
      for{
-       db <- AppContextEffect.get[F, UserDatabase[F]]
+       db <- InAppContext.get[F, UserDatabase[F]]
        u <- db.insert(user)
-       emailService <- AppContextEffect.get[F, EmailService]
+       emailService <- InAppContext.get[F, EmailService]
        _ <- emailService.sendEmail(u, "You have been subscribed")
      } yield u
      
@@ -56,9 +58,9 @@ class ExamplesTest extends munit.FunSuite {
             summon[Effect[F]].delay{ println("send-email")  }
        }
 
-     class MyLocalDatabase[F[_]:CpsEffectMonad:AppContextEffect[ConnectionPool *: EmptyTuple]] extends UserDatabase[F] {
+     class MyLocalDatabase[F[_]:CpsEffectMonad:InAppContext[ConnectionPool *: EmptyTuple]] extends UserDatabase[F] {
        def insert(user: User):F[User] = reify[F] {
-         val cn = AppContext.async[F, ConnectionPool].await
+         val cn = InAppContext.get[F, ConnectionPool].await
          println(s"insert ${user} with connection ${cn}, this=${this}")
          user
        }
