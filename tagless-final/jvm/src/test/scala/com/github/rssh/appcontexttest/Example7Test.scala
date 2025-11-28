@@ -1,6 +1,6 @@
 package com.github.rssh.appcontexttest
 
-
+import scala.compiletime.requireConst
 import com.github.rssh.appcontext.*
 import cats.effect.*
 import cats.syntax.all.*
@@ -39,7 +39,7 @@ object Example7TestTF {
 
   class UserDatabase(using UserDatabase.DependenciesProviders) {
 
-    AppContextAsyncProviders.checkAllAreNeeded
+    requireConst(AppContextAsyncProviders.checkAllAreNeeded)
 
     def insert(user: User): IO[User] = {
       AppContextAsyncProvider.get[IOResource, Connection].use { conn =>
