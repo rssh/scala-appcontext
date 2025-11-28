@@ -37,7 +37,6 @@ object AppContextAsyncProviders {
  
 
  def tryBuildImpl[F[_]:Type, Xs <: NonEmptyTuple:Type](using Quotes): Expr[TryBuild[F,Xs]] = {
-   println(s"tryBuildImpl AppContextAsyncProviders ${Type.show[F]} ${Type.show[Xs]}")
    import quotes.reflect.*
    val fType = TypeRepr.of[F]
    val tupleType = TypeRepr.of[Xs]
@@ -59,7 +58,6 @@ object AppContextAsyncProviders {
         ))
       }
    }
-   println(s"tryBuildImpl AppContextAsyncProviders retval: ${retval.show}")
    retval
  }
 
