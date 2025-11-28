@@ -2,7 +2,7 @@
 import scala.scalanative.build._
 
 
-ThisBuild/version := "0.2.0"
+ThisBuild/version := "0.3.0"
 ThisBuild/versionScheme := Some("semver-spec")
 ThisBuild/resolvers ++= Opts.resolver.sonatypeOssSnapshots
 
@@ -11,13 +11,13 @@ ThisBuild/resolvers ++= Opts.resolver.sonatypeOssSnapshots
 val sharedSettings = Seq(
     organization := "com.github.rssh",
     //scalaVersion := "3.6.4-RC1-bin-SNAPSHOT",
-    scalaVersion := "3.3.4",
+    scalaVersion := "3.3.7",
     scalacOptions ++= Seq(
                "-Xcheck-macros", 
                "-Wvalue-discard", 
                "-Wnonunit-statement", 
     ),
-    libraryDependencies += "org.scalameta" %%% "munit" % "1.0.0" % Test
+    libraryDependencies += "org.scalameta" %%% "munit" % "1.0.4" % Test
 )
 
 
@@ -61,10 +61,10 @@ lazy val taglessFinal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
    .settings(sharedSettings)
    .settings(
        name := "appcontext-tf",
-       libraryDependencies += "com.github.rssh" %%% "dotty-cps-async" % "0.9.23" % "optional"
+       libraryDependencies += "io.github.dotty-cps-async" %%% "dotty-cps-async" % "1.1.5" % "optional"
    ).jvmSettings(
-    libraryDependencies += "org.typelevel" %% "cats-effect" % "3.5.7" % "test",
-    libraryDependencies += "com.github.rssh" %% "cps-async-connect-cats-effect" % "0.9.23" % "test",
+    libraryDependencies += "org.typelevel" %% "cats-effect" % "3.6.3" % "test",
+    libraryDependencies += "io.github.dotty-cps-async" %% "cps-async-connect-cats-effect" % "1.1.5" % "test",
   )
    
 
