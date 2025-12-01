@@ -1,4 +1,4 @@
-credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credentials")
+credentials += Credentials(Path.userHome / ".sbt" / "central_sonatype_credentials")
 
 ThisBuild / organization := "com.github.rssh"
 ThisBuild / organizationName := "rssh"
@@ -27,11 +27,6 @@ ThisBuild / licenses := List("Apache 2" -> new URL("http://www.apache.org/licens
 ThisBuild / homepage := Some(url("https://github.com/rssh/scala-appcontext"))
 
 ThisBuild / pomIncludeRepository := { _ => false }
-ThisBuild / publishTo := {
-       val nexus = "https://oss.sonatype.org/"
-       if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
-       else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
 ThisBuild / publishMavenStyle := true
 
 

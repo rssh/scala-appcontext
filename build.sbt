@@ -5,6 +5,7 @@ import scala.scalanative.build._
 ThisBuild/version := "0.3.0"
 ThisBuild/versionScheme := Some("semver-spec")
 ThisBuild/resolvers ++= Opts.resolver.sonatypeOssSnapshots
+ThisBuild/publishTo := localStaging.value
 
 
 
