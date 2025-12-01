@@ -7,7 +7,7 @@ See blog-posts:
   - https://github.com/rssh/notes/blob/master/2024_12_30_dependency_injection_tf.md for adoption to tagless-final style
   - https://github.com/rssh/notes/blob/master/2025_12_01_implicit_search_priority.md for fixing implicit search priority
 
-Discord channel #scala-appcontext on business4s:  https://discord.gg/GCMrwpGh 
+Discord channel #scala-appcontext on business4s:  https://discord.gg/uR8j2jFrgb
 
 Analog of UserDatabase example (see https://github.com/scala/scala3/blob/main/tests/run/Providers.scala) looks like:
 
