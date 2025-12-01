@@ -8,30 +8,20 @@ trait AppContextProviderModule[T] {
    * Dependencies providers: AppContextProviders[(T1,T2,...,Tn)], where T1,T2,...,Tn are dependencies.
    */
   type DependenciesProviders
-  
+
   /**
    * Component type, which we provide.
    */
   type Component = T
 
-  
+
   inline given provider(using dependenciesProvider: DependenciesProviders): AppContextProvider[Component] = ${
     AppContextProviderModule.providerImpl[Component, DependenciesProviders]('dependenciesProvider)
   }
 
-  
-  
-  inline def checkUsageDP: Unit = ${
-     AppContextProviderModule.checkUsageDpImpl[Component, DependenciesProviders]
-  }
-  
 }
 
 object AppContextProviderModule {
-
-  trait CheckUsage[DP] {
-    def check: Unit
-  }
 
   def providerImpl[T:Type,DP:Type](dp:Expr[DP])(using Quotes): Expr[AppContextProvider[T]] = {
     import quotes.reflect.*
@@ -76,36 +66,5 @@ object AppContextProviderModule {
     }
     retval
   }
-  
-
-  def checkUsageDpImpl[T:Type, DP:Type](using Quotes): Expr[Unit] = {
-    import quotes.reflect.*
-    TypeRepr.of[DP].dealias match
-      case AppliedType(tycon, List(targsTuple)) if tycon <:< TypeRepr.of[AppContextProviders] =>
-        targsTuple match
-          case AppliedType(tp1, targs) =>
-            for{ targ <- targs } {
-              val tProvider = TypeRepr.of[AppContextProvider].appliedTo(targ)
-              Implicits.search(tProvider) match
-                case failure: ImplicitSearchFailure =>
-                  //report.error(s"Cannot find ${tProvider.show}: ${failure.explanation}")
-                case success: ImplicitSearchSuccess =>
-                  // ok, do nothing
-                  report.error(s"Provider for ${targ.show} is not necessory: ${success.tree.show} provider will be used")
-            }
-          case _ =>
-            report.error(s"AppContextProviders should have tuple of dependencies, we have ${targsTuple.show}")
-      case oneProvider if oneProvider <:< TypeRepr.of[AppContextProvider[?]] =>
-        Implicits.search(oneProvider) match
-          case failure: ImplicitSearchFailure =>
-            //report.error(s"Cannot find ${oneProvider.show}: ${failure.explanation}")
-          case success: ImplicitSearchSuccess =>
-            // ok, do nothing
-            report.error(s"Provider for ${oneProvider.show} is not necessory: ${success.tree.show} provider will be used")
-      case _ =>
-        report.error(s"AppContextProviders should have AppContextProviders[T] like type, we have ${TypeRepr.of[DP].show}")
-    '{}
-  }
-
 
 }

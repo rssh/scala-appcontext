@@ -57,8 +57,6 @@ object Example6TestTF {
 
   class SubscriptionService(using AppContextProviders[(UserDatabase, EmailSender)]) {
 
-    AppContextProviders.checkAllAreNeeded[(UserDatabase, EmailSender)]
-
     def subscribe(user: User): IO[Unit] = {
       val userDb = AppContext[UserDatabase]
       val emailSender = AppContext[EmailSender]

@@ -30,8 +30,6 @@ trait ConnectionPool {
 
 class UserSubscription(using UserSubscription.DependenciesProviders) {
 
-    assert(AppContextProviders.checkAllAreNeeded)
-    
     def subscribe(user: User): Unit =
       AppContext[EmailService].sendEmail(user, "You have been subscribed")
       AppContext[UserDatabase].insert(user)

@@ -39,8 +39,6 @@ object Example7TestTF {
 
   class UserDatabase(using UserDatabase.DependenciesProviders) {
 
-    requireConst(AppContextAsyncProviders.checkAllAreNeeded)
-
     def insert(user: User): IO[User] = {
       AppContextAsyncProvider.get[IOResource, Connection].use { conn =>
         AppContextAsyncProvider.get[IOResource, Logger].use { logger =>

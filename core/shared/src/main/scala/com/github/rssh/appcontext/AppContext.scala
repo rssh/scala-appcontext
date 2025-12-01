@@ -27,12 +27,16 @@ object AppContext  {
    /**
     * Get component from application context.
     * For this component should have an implicit AppContextProvider.
+    * When called inside a class with AppContextProviders[(X, Y, ...)],
+    * the providers from that tuple take precedence over AppContextProvider[X]
+    * defined in X's companion object.
     * @see AppContextProvider
+    * @see AppContextProviderLookup
     * @tparam T - component to instantiate
     * @return
     */
-   def apply[T](using AppContextProvider[T]): T =
-     summon[AppContextProvider[T]].get
+   def apply[T](using AppContextProviderLookup[T]): T =
+     summon[AppContextProviderLookup[T]].get
 
    /**
     * Type for component cache.

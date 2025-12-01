@@ -68,10 +68,6 @@ object AppContextProviders {
     }
     retval
   }
-  
-  inline def checkAllAreNeeded[Xs<:NonEmptyTuple](using p: AppContextProviders[Xs]): Boolean =
-    ${ TupleMacroses.checkAllAreNeeded[[X]=>>AppContextProvider[X],[X<:NonEmptyTuple]=>>AppContextProviders[X],Xs]('p) }
-   
 
 }
 

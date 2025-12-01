@@ -112,8 +112,6 @@ object Example3 {
 
   class UserSubscription(using UserSubscription.DependenciesProviders) {
 
-    assert(AppContextProviders.checkAllAreNeeded)
-    
     def subscribe(user: User): Unit =
       AppContext[EmailService].sendEmail(user, "You have been subscribed")
       AppContext[UserDatabase].insert(user)
@@ -123,7 +121,6 @@ object Example3 {
 
   object UserSubscription extends AppContextProviderModule[UserSubscription] {
     type DependenciesProviders = AppContextProviders[(EmailService, UserDatabase)]
-    checkUsageDP
   }
 
   trait EmailService {
@@ -140,7 +137,6 @@ object Example3 {
 
   object UserDatabase extends AppContextProviderModule[UserDatabase] {
     type DependenciesProviders = AppContextProvider[ConnectionPool]
-    checkUsageDP
   }
 
   trait ConnectionPool {
