@@ -5,6 +5,7 @@ Simple lightweight dependency injection
 See blog-posts:
   - https://github.com/rssh/notes/blob/master/2024_12_09_dependency-injection.md for motivation and core
   - https://github.com/rssh/notes/blob/master/2024_12_30_dependency_injection_tf.md for adoption to tagless-final style
+  - https://github.com/rssh/notes/blob/master/2025_12_01_implicit_search_priority.md for fixing implicit search priority
 
 Discord channel #scala-appcontext on business4s:  https://discord.gg/GCMrwpGh 
 
