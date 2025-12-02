@@ -13,6 +13,21 @@ trait AppContextAsyncProviders[F[_],Xs <: NonEmptyTuple] extends AppContextAsync
 
 object AppContextAsyncProviders {
 
+ /**
+  * Accept a tuple of services and create an AppContextAsyncProviders for them.
+  * The services are wrapped in pure effect.
+  * ```
+  *   given pure: AppContextPure[F] = ...
+  *   val providers = AppContextAsyncProviders.of[F, (Service1, Service2)](service1, service2)
+  *   val depended = new Dependent(using providers)
+  * ```
+  */
+ def of[F[_], T <: NonEmptyTuple](values: T)(using pure: util.AppContextPure[F]): AppContextAsyncProviders[F, T] = {
+   val arr = values.productIterator.map { v =>
+     AppContextAsyncProvider.of[F, Any](pure.pure(v)): AppContextAsyncProvider[F, ?]
+   }.toArray
+   new DefaultAppContextAsyncProviders[F, T](arr)
+ }
 
  trait TryBuild[F[_], Xs<:NonEmptyTuple]
  case class TryBuildSuccess[F[_],Xs<:NonEmptyTuple](providers:AppContextAsyncProviders[F,Xs]) extends TryBuild[F,Xs]

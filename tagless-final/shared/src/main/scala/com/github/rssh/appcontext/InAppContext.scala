@@ -7,10 +7,10 @@ type InAppContext[Dependencies <: NonEmptyTuple] = [F[_]] =>> AppContextAsyncPro
 object InAppContext {
 
   class FProvider[F[_]]:
-    def apply[T](using p:AppContextAsyncProvider[F,T]): F[T] =
+    def apply[T](using p:AppContextAsyncProviderLookup[F,T]): F[T] =
       p.get
 
-  def get[F[_],T](using p: AppContextAsyncProvider[F,T]): F[T] =
+  def get[F[_],T](using p: AppContextAsyncProviderLookup[F,T]): F[T] =
       p.get
 
   def get1[F[_]](using p: AppContextAsyncProvider[F,?]): FProvider[F] =
@@ -20,7 +20,7 @@ object InAppContext {
 
 extension(ac:AppContext.type)
 
-  def asyncGet[F[_],T](using p: AppContextAsyncProvider[F,T]): F[T] =
+  def asyncGet[F[_],T](using p: AppContextAsyncProviderLookup[F,T]): F[T] =
         p.get
 
 
