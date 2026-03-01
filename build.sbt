@@ -25,9 +25,7 @@ val sharedSettings = Seq(
 
 lazy val root = project
   .in(file("."))
-  .aggregate(appcontext.js, appcontext.jvm, appcontext.native,
-             taglessFinal.js, taglessFinal.jvm, taglessFinal.native
-            )
+  .aggregate(appcontext.js, appcontext.jvm, appcontext.native)
   .settings(
     git.remoteRepo := "git@github.com:rssh/proofspace-appcontext.git",
     publishArtifact := false,
@@ -39,13 +37,16 @@ lazy val appcontext = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     .settings(sharedSettings)
     .settings(
        name := "appcontext",
+       libraryDependencies += "io.github.dotty-cps-async" %%% "dotty-cps-async" % "1.1.5" % "optional",
     )
     .disablePlugins(SitePreviewPlugin)
     .jvmSettings(
-        Compile / doc / scalacOptions := Seq("-groups",  
+        Compile / doc / scalacOptions := Seq("-groups",
                 "-source-links:shared=github://rssh/scala-appcontext/master#shared",
                 "-source-links:jvm=github://rssh/scala-appcontext/master#jvm"),
         libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.3" % "test",
+        libraryDependencies += "org.typelevel" %% "cats-effect" % "3.6.3" % "test",
+        libraryDependencies += "io.github.dotty-cps-async" %% "cps-async-connect-cats-effect" % "1.1.5" % "test",
         mimaFailOnNoPrevious := false,
     ).jsSettings(
         scalaJSUseMainModuleInitializer := true,
@@ -56,16 +57,4 @@ lazy val appcontext = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ).nativeSettings(
     )
 
-lazy val taglessFinal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
-   .in(file("tagless-final"))
-   .dependsOn(appcontext)
-   .settings(sharedSettings)
-   .settings(
-       name := "appcontext-tf",
-       libraryDependencies += "io.github.dotty-cps-async" %%% "dotty-cps-async" % "1.1.5" % "optional"
-   ).jvmSettings(
-    libraryDependencies += "org.typelevel" %% "cats-effect" % "3.6.3" % "test",
-    libraryDependencies += "io.github.dotty-cps-async" %% "cps-async-connect-cats-effect" % "1.1.5" % "test",
-  )
-   
 

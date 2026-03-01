@@ -39,6 +39,17 @@ object AppContext  {
      summon[AppContextProviderLookup[T]].get
 
    /**
+    * Async access to application context in effect F.
+    * {{{
+    *   val asyncAppContext = AppContext.In[Durable]()
+    *   val service = asyncAppContext[EmailService]  // returns Durable[EmailService]
+    * }}}
+    * @tparam F - effect type
+    */
+   class In[F[_]]:
+     def apply[T](using p: AppContextAsyncProvider[F, T]): F[T] = p.get
+
+   /**
     * Type for component cache.
     * By convention, if component depends from cache then it's AppContextProvider should check
     * if this component is already in cache and instantiate new (and update cache) only if it's not found.
