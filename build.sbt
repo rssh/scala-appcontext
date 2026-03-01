@@ -18,7 +18,7 @@ val sharedSettings = Seq(
                "-Wvalue-discard", 
                "-Wnonunit-statement", 
     ),
-    libraryDependencies += "org.scalameta" %%% "munit" % "1.0.4" % Test
+    libraryDependencies += "org.scalameta" %%% "munit" % "1.2.3" % Test
 )
 
 
@@ -37,7 +37,7 @@ lazy val appcontext = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     .settings(sharedSettings)
     .settings(
        name := "appcontext",
-       libraryDependencies += "io.github.dotty-cps-async" %%% "dotty-cps-async" % "1.1.5" % "optional",
+       libraryDependencies += "io.github.dotty-cps-async" %%% "dotty-cps-async" % "1.3.0" % "optional",
     )
     .disablePlugins(SitePreviewPlugin)
     .jvmSettings(
@@ -46,7 +46,7 @@ lazy val appcontext = crossProject(JSPlatform, JVMPlatform, NativePlatform)
                 "-source-links:jvm=github://rssh/scala-appcontext/master#jvm"),
         libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.3" % "test",
         libraryDependencies += "org.typelevel" %% "cats-effect" % "3.6.3" % "test",
-        libraryDependencies += "io.github.dotty-cps-async" %% "cps-async-connect-cats-effect" % "1.1.5" % "test",
+        libraryDependencies += "io.github.dotty-cps-async" %% "cps-async-connect-cats-effect" % "1.3.0" % "test",
         mimaFailOnNoPrevious := false,
     ).jsSettings(
         scalaJSUseMainModuleInitializer := true,
